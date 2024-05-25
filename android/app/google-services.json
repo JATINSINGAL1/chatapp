@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "265078603788",
+    "project_id": "fun-chat-e254f",
+    "storage_bucket": "fun-chat-e254f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265078603788:android:7625c4049179389db6ae29",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBu3O-nXettoUk2nvZIEmzVOnxsEH04lE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,4 +10,5 @@ const appname = "Quick Chats",
     settings = "Settings",
     poweredby = "Desgined & Developed by FunChats developers",
     cont = "Start Messaging",
-    slogan = "join the\nrevolution\ntoday.";
+    slogan = "join the\nrevolution\ntoday.",
+    namesub="This is not your username. This is name will be visible to your FunChats friends";
