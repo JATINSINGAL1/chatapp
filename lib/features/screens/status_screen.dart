@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'dart:math' as math;
 
 class StatusScreen extends StatelessWidget {
   const StatusScreen({super.key});

@@ -1,5 +1,4 @@
 import 'package:chatapp/constants/sidescrolldata.dart';
-import 'package:chatapp/constants/strings.dart';
 import 'package:chatapp/features/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
