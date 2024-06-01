@@ -58,7 +58,7 @@ class AuthenticationController extends GetxController {
         "id": user.uid,
         "name": usernameController.text.toString(),
         "phone": phoneController.text.toString(),
-      }
+      },SetOptions(merge: true)
       );
       // showDialog(
       //   context: context,

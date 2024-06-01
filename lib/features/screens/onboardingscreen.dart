@@ -72,7 +72,7 @@ class OnBoardingScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: MediaQuery.sizeOf(context).width - 60,
+                      width: MediaQuery.sizeOf(context).width ,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(16),

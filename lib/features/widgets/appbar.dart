@@ -1,17 +1,14 @@
-import 'package:chatapp/features/widgets/sidescroll.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 
 class appbar extends StatelessWidget {
-   appbar( {super.key, } );
-
-
+  const appbar({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right:12 ),
+      padding: const EdgeInsets.only(right: 12),
       height: 80,
       color: Colors.white,
       child: Row(
@@ -26,10 +23,9 @@ class appbar extends StatelessWidget {
                     topRight: Radius.circular(100),
                     bottomRight: Radius.circular(100))),
             child: InkWell(
-              onTap:(){
-                
+              onTap: () {
                 Scaffold.of(context).openDrawer();
-              } ,
+              },
               child: const Icon(
                 Icons.settings,
                 color: Colors.white,
@@ -37,8 +33,7 @@ class appbar extends StatelessWidget {
             ),
           ),
           RichText(
-              text: const TextSpan(
-                children: [
+              text: const TextSpan(children: [
             TextSpan(
                 text: "Fun Chat\n",
                 style: TextStyle(
@@ -59,7 +54,6 @@ class appbar extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          
         ],
       ),
     );

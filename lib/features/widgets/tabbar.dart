@@ -1,16 +1,14 @@
 import 'package:chatapp/constants/strings.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class tabbar extends StatelessWidget {
-  const tabbar({super.key});
+class Etabbar extends StatelessWidget {
+  const Etabbar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       
-      child: const RotatedBox(
+      child:  RotatedBox(
         quarterTurns: -1,
         child: TabBar(
           labelStyle: TextStyle(

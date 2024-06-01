@@ -1,11 +1,26 @@
+import 'dart:html';
+
+import 'package:chatapp/constants/firebase_const.dart';
+import 'package:chatapp/controllers/chat_controller.dart';
+import 'package:chatapp/features/widgets/message_widget.dart';
+import 'package:chatapp/services/store_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
+  const ChatScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(ChatController());
+    String chatId;
+    map() async {
+      chatId = await controller.chatId;
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -40,12 +55,13 @@ class ChatScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 3),
                 child: Row(
                   children: [
+                    // last seen changes can be implied
                     Expanded(
                         child: RichText(
-                            text: const TextSpan(children: [
+                            text: TextSpan(children: [
                       TextSpan(
-                          text: "Username\n",
-                          style: TextStyle(
+                          text: "${controller.friendname}\n",
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,
                               fontWeight: FontWeight.w700)),
@@ -68,85 +84,109 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
               const SizedBox(
                 height: 10,
               ),
-              Expanded(
-                child: ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 8,
-                  ),
-                  itemCount: 15,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Directionality(
-                      textDirection:
-                          index.isEven ? TextDirection.rtl : TextDirection.ltr,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor:
-                                index.isEven ? Colors.black : Colors.red,
-                            child: Image.asset(
-                              "assets/icons/ic_user.png",
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.sizeOf(context).width * 0.55,
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 7),
-                            decoration: BoxDecoration(
-                                color: index.isEven ? Colors.black : Colors.red,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Text(
-                              textDirection: TextDirection.ltr,
-                              softWrap: true,
-                              "Hello lorenmaojl ljdofij aodsalkj jaitndlk iadnflkuj jdfhoij jnsdoif",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          Expanded(
-                              child: Text(
-                            textAlign:
-                                index.isEven ? TextAlign.start : TextAlign.end,
-                            "11:00 AM",
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 12),
-                            textDirection: TextDirection.ltr,
-                          ))
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+
+              //  some changes more required
+              FutureBuilder(
+                  future: controller.fetchChatId(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting || controller.chatId==null) {
+                      return Expanded(
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text("Error: ${snapshot.error}"),
+                      );
+                    } else {
+                      // return Container(color: Colors.red,height: 100,width: 100,);
+                      return 
+                     
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: StoreServices.getChats(controller.chatId!),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            // print("this is poitnL ${snapshot.data!.docs.length}");
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              if (snapshot.hasData) {
+                                return ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    height: 8,
+                                  ),
+                                  itemCount: snapshot.data!.docs.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return 
+                                    // Container(
+                                    //   color: Colors.red,
+                                    //   height: 100,
+                                    //   width: 100,
+                                    // );
+                                        MessageWidget(
+                                      index: index,
+                                      docs: snapshot.data!.docs[index],
+                                    );
+                                  },
+                                );
+                              } else if (snapshot.hasError) {
+                                print("ERror");
+                                return Center(
+                                  child:
+                                      Text("${snapshot.hasError.toString()}"),
+                                );
+                              } else {
+                                return Center(
+                                  child: Text("NO Data Found"),
+                                );
+                              }
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    }
+                  }),
+
+              // beutify this
               Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 height: 56,
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 10),
                         margin: EdgeInsets.zero,
                         decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(16)),
                         child: TextFormField(
-                          
+                          controller: controller.messagecontroller,
                           cursorColor: Colors.white,
                           style: TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
-                            suffixIcon: Icon(Icons.attachment_rounded,color: Colors.white54,),
+                              suffixIcon: Icon(
+                                Icons.attachment_rounded,
+                                color: Colors.white54,
+                              ),
                               prefixIcon: Icon(
                                 Icons.emoji_emotions_rounded,
                                 color: Colors.white54,
@@ -163,13 +203,19 @@ class ChatScreen extends StatelessWidget {
                     const SizedBox(
                       width: 10,
                     ),
-                    const CircleAvatar(
-                      radius: 16,
-                      backgroundColor: Colors.red,
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 16,
+                    GestureDetector(
+                      onTap: () {
+                        controller.postMessage(
+                            controller.messagecontroller.text.toString());
+                      },
+                      child: const CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Colors.red,
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ],

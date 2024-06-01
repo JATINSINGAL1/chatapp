@@ -23,7 +23,7 @@ class VerificationScreen extends StatelessWidget {
               const SizedBox(
                 height: 32,
               ),
-
+              // IN this method we have used normal validation method for future change use form validation method
               // Username
               TextField(
                 controller: controller.usernameController,
@@ -113,14 +113,31 @@ class VerificationScreen extends StatelessWidget {
                     shape: const StadiumBorder(),
                   ),
                   onPressed: () async {
-                    if (!controller.isOtpSent.value) {
-                      controller.isOtpSent.value = true;
-                      await controller.otpSend();
+                    if (controller.usernameController.text == "" ||
+                        controller.phoneController.text == "") {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Enter all the fields"),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('OK'))
+                            ],
+                          );
+                        },
+                      );
                     } else {
-                     await controller.verifyOtp(context);
+                      if (!controller.isOtpSent.value) {
+                        controller.isOtpSent.value = true;
+                        await controller.otpSend();
+                      } else {
+                        await controller.verifyOtp(context);
+                      }
                     }
-
-                    
                   },
                   child: const Text(
                     overflow: TextOverflow.ellipsis,

@@ -32,9 +32,15 @@ dependencies:
   cupertino_icons: ^1.0.6
   firebase_auth: ^4.19.6
   firebase_core: ^2.31.1
+  firebase_storage: ^11.7.6
   flutter:
     sdk: flutter
   get: ^4.6.6
+  image_picker: ^1.1.1
+  intl: ^0.19.0
+  permission_handler: ^11.3.1
+  # for saving user data in local storage
+  shared_preferences: ^2.2.3 
 
 dev_dependencies:
   flutter_lints: ^3.0.0
